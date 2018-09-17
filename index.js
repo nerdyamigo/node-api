@@ -1,12 +1,13 @@
 /*
  *  Primary file for the API
  *
- */
+*/
 
 // Dependecies
 var http = require('http')
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
+var config = require('./config');
 
 // define what the server does using the http module
 // The server should respond to all requests with a string
@@ -82,8 +83,8 @@ var server = http.createServer(function(req, res) {
 	
 });
 
-server.listen(3000, function() {
-	console.log('The server is listening on port 3000')
+server.listen( config.port, function() {
+	console.log('The server is listening on port: ' + config.port + '\n' + 'Enviroment: ' + config.envName)
 });
 
 // Define handlers
