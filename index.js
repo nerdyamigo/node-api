@@ -57,6 +57,7 @@ var server = http.createServer(function(req, res) {
 
 		// route req to the handler specified in handler
 		chosenHandler(data, function(statusCode, payload) {
+
 			// Use the satus code called back by the handler or default to 200
 			statusCode = typeof(statusCode) == 'number' ? statusCode : 200;
 			// Use the payload called back by the handler, or default to ''
@@ -64,6 +65,9 @@ var server = http.createServer(function(req, res) {
 
 			// send string back, convert payload to strg
 			var payloadString = JSON.stringify(payload);
+
+			// set the header content type so that apps know we are dealing with JSON
+			res.setHeader('Content-Type', 'application/json');
 
 			// return result
 			res.writeHead(statusCode);
