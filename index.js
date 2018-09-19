@@ -10,6 +10,21 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
+var _data = require('./lib/data');
+
+// TEST
+// @TODO DELETE 
+//
+_data.delete('test', 'newFile', function(err) {
+	if(!err) {
+		console.log('Action worked');
+		return;
+	} else {
+		console.log('this was an err ', err)
+	}
+});
+
+
 // define what the server does using the http module
 // The server should respond to all requests with a string
 
