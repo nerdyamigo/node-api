@@ -8,21 +8,13 @@ var http = require('http')
 var https = require('https')
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
-var config = require('./config');
+var config = require('./lib/config');
 var fs = require('fs');
 var _data = require('./lib/data');
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers');
 
 // TEST
-// @TODO DELETE 
-//
-_data.delete('test', 'newFile', function(err) {
-	if(!err) {
-		console.log('Action worked');
-		return;
-	} else {
-		console.log('this was an err ', err)
-	}
-});
 
 
 // define what the server does using the http module
@@ -55,28 +47,11 @@ httpsServer.listen( config.httpsPort, function() {
 	console.log('The server is listening on port: ' + config.httpsPort + '\n' )
 });
 
-// Define handlers
-var handlers = {};
-
-// Ping handler
-handlers.ping = function(data, callback) {
-	// callback a http status code, and payload(should be an object)
-	callback(200);
-};
-
-handlers.hello = function(data, callback) {
-	callback(200, {welcome: 'Welcome!!!'})
-};
-
-// Not Found handler
-handlers.notFound = function(data, callback) {
-	callback(404);
-};
-
 // Define a req router
 var router = {
 	'ping' : handlers.ping,
-	'hello': handlers.hello
+	'hello': handlers.hello,
+	'users': handlers.users
 }
 
 // All the server logic for both http and https
@@ -118,7 +93,7 @@ var unifiedServer = function(req, res) {
 			'queryStringObject': queryStringObject,
 			'method': method,
 			'headers': headers,
-			'payload': buffer
+			'payload': helpers.parseJsonToObject(buffer)
 		}
 
 		// route req to the handler specified in handler
